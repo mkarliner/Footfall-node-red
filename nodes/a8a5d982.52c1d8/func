@@ -1,0 +1,32 @@
+target = flow.get('target')
+count = context.get('count') || 0
+
+// Only report every 3 times
+if(count < 3) {
+    count++ 
+    context.set('count', count)
+    return null
+} else {
+  context.set('count', 0)  
+}
+
+
+// Remove quotes
+temp = msg.payload.replace(/"/g,'')
+msg2 = {payload: temp}
+// Only report temperatures over 100
+if(parseInt(temp) < 100) {
+    return [null, msg2]
+    //msg.payload = "Low temp " + temp + " " + target
+} else {
+    if(parseInt(temp) >= parseInt(target) ) {
+        temp_msg = " temperature reached "
+    } else {
+        temp_msg = target
+    }
+    msg.payload = "Main Oven Temperature is " + temp + " degrees. Target " + temp_msg
+}
+
+
+
+return [msg, msg2];

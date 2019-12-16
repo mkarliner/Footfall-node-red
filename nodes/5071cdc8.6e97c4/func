@@ -1,0 +1,53 @@
+
+dwells = []
+cnts = flow.get('cnts') || {}
+
+
+
+// Incr detect count for each id 
+msg.payload.forEach(function(det) {
+    id = det[4]
+    if(cnts.hasOwnProperty( id)) {
+        node.warn(`DET: ${cnts[id]} `)   
+        cnts[id]++
+    } else {
+        cnts[id] = 1
+    }
+    // node.warn(ids[id])
+    })
+node.warn(`START IDS: ${JSON.stringify(cnts)} `)   
+for (var id_cnt in cnts) {
+    val = parseInt(cnts[id_cnt] / 10)
+    dwells[val] =  typeof dwells[val] === 'undefined' ? dwells[val] = 1 : dwells[val]+1
+}
+
+for(var i=0; i<dwells.length; i++) {
+    //node.warn(`IDd: ${typeof part} ${part} `)
+    if(typeof dwells[i] === 'undefined') {
+        dwells[i] = 0
+    }
+}
+
+node.warn(`DWELLS: ${dwells} `)
+
+labels = []
+for(var i=0; i<dwells.length; i++) {
+    labels[i] = `${i*10}-${(i*10)+10}`
+}
+
+msg.payload = [{
+    "series": ['x'],
+    "data": dwells,
+    "labels": labels
+}]
+
+
+flow.set('cnts', cnts)
+// msg.payload = [{
+//     "series": [ ],
+//     "data": [5,6,9, 6,7,2] ,
+//     "labels": [ 1,2,3,4,5,6 ]
+// }]
+
+
+return msg;

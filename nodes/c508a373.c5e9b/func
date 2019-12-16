@@ -1,0 +1,13 @@
+if(msg.topic == "doorbell/doorbell") {
+    cmd = "ON"
+} else if (msg.topic == "presence/hall") {
+    if(msg.payload.msg == "true") {
+        cmd = "ON"
+    } else {
+        cmd = "OFF"
+    }
+}
+
+msg.payload = cmd
+msg.topic = "cmnd/sonoff3/POWER"
+return msg;

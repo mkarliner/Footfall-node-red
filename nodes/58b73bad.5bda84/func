@@ -1,0 +1,59 @@
+
+maclist = context.get('maclist') || []
+
+// construct the item
+
+
+knownlist = [
+    {oui: "f0:7d:68:4e:bb:ba", name: "Upstairs Wifi"},
+    {oui: "88:88:88:88:87:88", name: "BigMac"},
+    {oui: "d4:63:c6:fb:04:81", name: "MikePhone"},
+    {oui: "b8:27:eb:cb:be:37", name: "RPi3"},
+    {oui: "54:52:00:13:74:a6", name: "Verdi"},
+    {oui: "a0:1d:48:ec:eb:6a", name: "Printer"},
+    {oui: "44:07:0b:55:29:62", name: "GoogleHome"},
+    {oui: "00:87:12:02:48:fb", name: "VoiceKit"},
+    {oui: "b8:27:eb:cb:be:37", name: "RPi3"},
+    {oui: "5c:cf:7f:97:18:b6", name: "GRLights"},
+    {oui: "54:52:00:38:8a:98", name: "Gilbert"},
+    {oui: "58:e2:8f:08:0a:f6", name: "Apple1"},
+    {oui: "00:1b:63:bb:f4:8e", name: "Apple1"}
+    
+    ]
+
+
+isNew = true
+
+maclist.forEach(function(item, idx, array) {
+    if(typeof msg.oui != 'undefined' && 
+    typeof item.oui != 'undefined' && 
+    msg.oui == item.oui) {
+        item.count++
+        item.time = new Date().toLocaleTimeString('en-GB')
+        isNew = false
+        return item
+    } 
+    
+})
+
+maclist.forEach(function(item, idx, array) {
+    knownlist.forEach(function(itm) {
+        if(item.oui === itm.oui) {
+            item.name = itm.name
+        }
+    })
+})
+
+
+if(isNew === true) {
+    newitem = {}
+    newitem.oui = msg.oui
+    newitem.time = new Date().toLocaleTimeString('en-GB')
+    newitem.count = 1
+    newitem.vendor = msg.payload[0] ? msg.payload[0].companyName : "Unknown"
+    maclist.push(newitem)
+}
+
+context.set('maclist', maclist)
+msg.payload = maclist
+return msg;

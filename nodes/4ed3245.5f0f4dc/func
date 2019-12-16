@@ -1,0 +1,2 @@
+msg.payload = msg.topic.replace("/", ",") + " " + msg.payload.msg
+return msg;

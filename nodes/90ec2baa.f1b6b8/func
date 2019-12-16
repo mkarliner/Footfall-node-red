@@ -1,0 +1,4 @@
+msg1 = {payload: msg.payload.pressure}
+msg2 = {payload: msg.payload.temperature}
+msg3 = {payload: msg.payload.humidity}
+return [msg1, msg2, msg3];

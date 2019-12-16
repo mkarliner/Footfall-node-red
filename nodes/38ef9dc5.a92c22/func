@@ -1,0 +1,40 @@
+if(!msg.payload.RfReceived) {
+    return [null, msg]
+}
+data = msg.payload.RfReceived.Data
+key = data[data.length-1]
+switch(key) {
+    case '1': 
+        text = "TOGGLE"
+        say = "Garden room lights"
+        topic = "cmnd/sonoffbasic1/POWER"    
+    break
+    case '2': 
+        text = "TOGGLE"
+        say = "Garden room flood light"
+        topic = "cmnd/SonoffSocket1/POWER"
+    break
+    case '4': 
+        text = "Key C"
+        say = "Hello Margee"
+        topic = "say/all"
+    break
+    case '8': 
+        text = "OK Google. What is the time?"
+        say = "OK Google. What is the time?"
+        topic = "say/all"
+    break
+    case '9':
+        text = "Study door"
+        say = "Study door"
+        topic = "say/upstairs"
+    break
+    default: 
+        text = "Unknown Key Press"
+        say  = "Unknown " + data
+    break
+}
+msg.payload = text
+msg.say = say
+msg.topic = topic
+return [msg, null];

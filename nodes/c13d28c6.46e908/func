@@ -1,0 +1,5 @@
+oui = msg.payload.substring(0,8).toUpperCase()
+
+msg.topic = `select * from oui where oui = '${oui}'`
+msg.oui = msg.payload
+return msg;
